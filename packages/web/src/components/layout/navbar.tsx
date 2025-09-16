@@ -9,7 +9,8 @@ import {
   Users, 
   TrendingUp, 
   Menu,
-  X
+  X,
+  Star
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -20,8 +21,9 @@ export function Navbar() {
   const navigation = [
     { name: 'Roadmaps', href: '/roadmaps', icon: BookOpen },
     { name: 'Labs', href: '/labs', icon: Code },
-    { name: 'Questions', href: '/questions', icon: Users },
     { name: 'Trends', href: '/trends', icon: TrendingUp },
+    { name: 'Community', href: '/community', icon: Users },
+    { name: 'Leaderboard', href: '/leaderboard', icon: Star },
   ]
 
   return (
@@ -57,6 +59,11 @@ export function Navbar() {
                 <Link href="/dashboard">
                   <Button variant="ghost" size="sm">
                     Dashboard
+                  </Button>
+                </Link>
+                <Link href="/profile">
+                  <Button variant="ghost" size="sm">
+                    Profile
                   </Button>
                 </Link>
                 <UserButton 
