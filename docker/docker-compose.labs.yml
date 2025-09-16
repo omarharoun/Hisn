@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  # Linux Basics Lab Environment
+  linux-lab:
+    build:
+      context: .
+      dockerfile: lab-environments/linux-basics.Dockerfile
+    container_name: skillpath-linux-lab
+    stdin_open: true
+    tty: true
+    volumes:
+      - linux-lab-home:/home/labuser
+    networks:
+      - lab-network
+    profiles:
+      - linux
+      - all
+
+  # Docker Lab Environment (Docker-in-Docker)
+  docker-lab:
+    build:
+      context: .
+      dockerfile: lab-environments/docker-lab.Dockerfile
+    container_name: skillpath-docker-lab
+    privileged: true
+    ports:
+      - "2375:2375"
+      - "3000:3000"
+    volumes:
+      - docker-lab-home:/home/labuser
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - lab-network
+    profiles:
+      - docker
+      - all
+
+  # Jenkins Lab Environment
+  jenkins-lab:
+    build:
+      context: .
+      dockerfile: lab-environments/jenkins-lab.Dockerfile
+    container_name: skillpath-jenkins-lab
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins-lab-home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JENKINS_ADMIN_ID=admin
+      - JENKINS_ADMIN_PASSWORD=admin123
+    networks:
+      - lab-network
+    profiles:
+      - jenkins
+      - all
+
+  # Lab Session Manager (Future: Manages lab lifecycle)
+  lab-manager:
+    image: alpine:latest
+    container_name: skillpath-lab-manager
+    command: >
+      sh -c "
+        echo 'SkillPath Lab Manager';
+        echo 'Available lab environments:';
+        echo '  - Linux Basics: docker-compose --profile linux up linux-lab';
+        echo '  - Docker Lab: docker-compose --profile docker up docker-lab';
+        echo '  - Jenkins Lab: docker-compose --profile jenkins up jenkins-lab';
+        echo '  - All Labs: docker-compose --profile all up';
+        sleep infinity
+      "
+    networks:
+      - lab-network
+    profiles:
+      - manager
+
+volumes:
+  linux-lab-home:
+    name: skillpath-linux-lab-home
+  docker-lab-home:
+    name: skillpath-docker-lab-home
+  jenkins-lab-home:
+    name: skillpath-jenkins-lab-home
+
+networks:
+  lab-network:
+    name: skillpath-lab-network
+    driver: bridge
