@@ -1,0 +1,25 @@
+{
+  "name": "skillpath-platform",
+  "version": "1.0.0",
+  "description": "A comprehensive learning platform for software development and IP networking",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=packages/web",
+    "build": "npm run build --workspace=packages/web",
+    "start": "npm run start --workspace=packages/web",
+    "lint": "npm run lint --workspace=packages/web",
+    "type-check": "npm run type-check --workspace=packages/web",
+    "clean": "rm -rf packages/*/node_modules packages/*/.next packages/*/dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
