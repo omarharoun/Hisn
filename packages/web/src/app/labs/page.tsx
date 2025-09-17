@@ -155,6 +155,72 @@ export default function LabsPage() {
         avatar: '/avatars/monitoring-team.png'
       },
       createdAt: '2024-01-28'
+    },
+    {
+      id: 'terraform-infrastructure-lab',
+      title: 'Infrastructure as Code with Terraform',
+      description: 'Provision and manage cloud infrastructure using Terraform. Learn HCL syntax, state management, and best practices.',
+      type: 'coding',
+      difficulty: 'intermediate',
+      estimatedMinutes: 135,
+      tags: ['terraform', 'iac', 'aws', 'infrastructure'],
+      isPublic: true,
+      completedBy: 567,
+      rating: 4.5,
+      environment: {
+        type: 'docker',
+        image: 'hashicorp/terraform:latest'
+      },
+      author: {
+        name: 'Infrastructure Team',
+        avatar: '/avatars/infra-team.png'
+      },
+      createdAt: '2024-01-25'
+    },
+    {
+      id: 'jenkins-pipeline-lab',
+      title: 'Jenkins CI/CD Pipeline',
+      description: 'Build automated CI/CD pipelines with Jenkins. Learn pipeline as code, automated testing, and deployment strategies.',
+      type: 'coding',
+      difficulty: 'intermediate',
+      estimatedMinutes: 150,
+      tags: ['jenkins', 'ci-cd', 'automation', 'pipeline'],
+      isPublic: true,
+      completedBy: 634,
+      rating: 4.6,
+      environment: {
+        type: 'kubernetes',
+        resources: {
+          cpu: '1',
+          memory: '2Gi'
+        }
+      },
+      author: {
+        name: 'CI/CD Experts',
+        avatar: '/avatars/cicd-experts.png'
+      },
+      createdAt: '2024-01-20'
+    },
+    {
+      id: 'ansible-automation-lab',
+      title: 'Ansible Configuration Management',
+      description: 'Automate infrastructure configuration and deployment with Ansible. Learn playbooks, roles, and best practices.',
+      type: 'coding',
+      difficulty: 'intermediate',
+      estimatedMinutes: 120,
+      tags: ['ansible', 'automation', 'configuration', 'devops'],
+      isPublic: true,
+      completedBy: 445,
+      rating: 4.4,
+      environment: {
+        type: 'docker',
+        image: 'ansible/ansible:latest'
+      },
+      author: {
+        name: 'Automation Team',
+        avatar: '/avatars/automation-team.png'
+      },
+      createdAt: '2024-01-30'
     }
   ]
 
