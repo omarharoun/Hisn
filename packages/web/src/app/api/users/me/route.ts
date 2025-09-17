@@ -25,7 +25,7 @@ export async function GET() {
           badges(*)
         )
       `)
-      .eq('clerk_id', userId)
+      .eq('clerk_id', userId as string)
       .single()
 
     if (error) {
@@ -77,7 +77,7 @@ export async function PUT(request: NextRequest) {
         github_username: body.github_username,
         linkedin_url: body.linkedin_url
       })
-      .eq('clerk_id', userId)
+      .eq('clerk_id', userId as string)
       .select()
       .single()
 

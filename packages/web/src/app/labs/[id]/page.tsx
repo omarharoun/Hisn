@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Navbar } from '@/components/layout/navbar'
+import { InteractiveLabLayout } from '@/components/lab/interactive-lab-layout'
+import { Question } from '@/components/lab/question-panel'
 import { 
   Code, 
   Clock, 
@@ -24,10 +26,12 @@ import {
 
 interface Props {
   params: { id: string }
+  searchParams: { interactive?: string }
 }
 
-export default async function LabDetailPage({ params }: Props) {
+export default async function LabDetailPage({ params, searchParams }: Props) {
   const { userId } = auth()
+  const isInteractiveMode = searchParams.interactive === 'true'
   
   // Mock data - in real app, this would come from API
   const labs = {
@@ -55,6 +59,116 @@ export default async function LabDetailPage({ params }: Props) {
         name: 'System Admin Team',
         avatar: '/avatars/sysadmin-team.png'
       },
+      questions: [
+        {
+          id: 'navigation-basics',
+          title: 'File System Navigation',
+          description: 'Learn to navigate the Linux file system using basic commands.',
+          instructions: [
+            'Use the `pwd` command to display your current directory',
+            'List the contents of the current directory with `ls -la`',
+            'Navigate to the root directory using `cd /`',
+            'Explore the `/etc`, `/var`, and `/home` directories'
+          ],
+          hints: [
+            '`pwd` stands for "print working directory"',
+            'The `-la` flags show all files (including hidden) in long format',
+            'Use `cd` without arguments to return to your home directory',
+            'The root directory `/` is the top-level directory in Linux'
+          ],
+          expectedCommands: ['pwd', 'ls -la', 'cd /', 'ls'],
+          validationRules: [
+            {
+              type: 'command',
+              pattern: 'pwd',
+              description: 'Execute the pwd command'
+            }
+          ],
+          completed: false
+        },
+        {
+          id: 'file-operations',
+          title: 'File Operations',
+          description: 'Create, modify, and manage files and directories.',
+          instructions: [
+            'Create a new directory called `my-lab` in your home directory',
+            'Navigate into the `my-lab` directory',
+            'Create three files: `file1.txt`, `file2.txt`, and `script.sh`',
+            'Add some content to `file1.txt` using the `echo` command',
+            'Copy `file1.txt` to `file1-backup.txt`'
+          ],
+          hints: [
+            'Use `mkdir` to create directories',
+            'Use `cd` to change directories',
+            'Use `touch` to create empty files',
+            'Use `echo "content" > filename` to add content to files',
+            'Use `cp source destination` to copy files'
+          ],
+          expectedCommands: ['mkdir my-lab', 'cd my-lab', 'touch file1.txt file2.txt script.sh', 'echo "This is file 1" > file1.txt', 'cp file1.txt file1-backup.txt'],
+          validationRules: [
+            {
+              type: 'command',
+              pattern: 'mkdir.*my-lab',
+              description: 'Create the my-lab directory'
+            }
+          ],
+          completed: false
+        },
+        {
+          id: 'permissions',
+          title: 'File Permissions',
+          description: 'Understand and manage file permissions in Linux.',
+          instructions: [
+            'Check the permissions of your files using `ls -l`',
+            'Make `script.sh` executable using `chmod +x`',
+            'Change the permissions of `file2.txt` to read-only using `chmod 444`',
+            'View the updated permissions with `ls -l`'
+          ],
+          hints: [
+            'The `ls -l` command shows detailed file information including permissions',
+            'File permissions are shown as rwx (read, write, execute) for user, group, and others',
+            'Use `chmod +x filename` to make a file executable',
+            'Use `chmod 444 filename` to make a file read-only for everyone'
+          ],
+          expectedCommands: ['ls -l', 'chmod +x script.sh', 'chmod 444 file2.txt', 'ls -l'],
+          validationRules: [
+            {
+              type: 'command',
+              pattern: 'chmod.*\\+x.*script\\.sh',
+              description: 'Make script.sh executable'
+            }
+          ],
+          completed: false
+        },
+        {
+          id: 'text-processing',
+          title: 'Text Processing',
+          description: 'Learn basic text processing and manipulation commands.',
+          instructions: [
+            'Create a file called `fruits.txt` with several fruit names',
+            'Use `grep` to search for lines containing "apple"',
+            'Sort the contents of the file using `sort`',
+            'Count the lines, words, and characters using `wc`',
+            'Use pipes to combine commands (e.g., `cat fruits.txt | grep "a" | wc -l`)'
+          ],
+          hints: [
+            'Use `echo -e "apple\\nbanana\\ncherry\\napple" > fruits.txt` to create the file',
+            '`grep "pattern" filename` searches for patterns in files',
+            '`sort filename` sorts the lines in a file alphabetically',
+            '`wc filename` counts lines, words, and characters',
+            'Pipes (|) connect the output of one command to the input of another'
+          ],
+          expectedCommands: ['echo -e "apple\\nbanana\\ncherry\\napple" > fruits.txt', 'grep "apple" fruits.txt', 'sort fruits.txt', 'wc fruits.txt', 'cat fruits.txt | grep "a" | wc -l'],
+          validationRules: [
+            {
+              type: 'command',
+              pattern: 'grep.*apple.*fruits\\.txt',
+              description: 'Search for apple in fruits.txt'
+            }
+          ],
+          completed: false
+        }
+      ] as Question[],
       instructions: `# Linux Command Line Essentials Lab
 
 Welcome to the Linux Command Line Essentials lab! In this hands-on exercise, you'll learn the fundamental commands and concepts needed to work effectively with Linux systems.
@@ -212,6 +326,61 @@ cat fruits.txt | grep "a" | wc -l
         name: 'DevOps Team',
         avatar: '/avatars/devops-team.png'
       },
+      questions: [
+        {
+          id: 'docker-basics',
+          title: 'Docker Basics',
+          description: 'Learn fundamental Docker commands and concepts.',
+          instructions: [
+            'Check if Docker is running with `docker --version`',
+            'Pull the nginx image with `docker pull nginx`',
+            'List all Docker images using `docker images`',
+            'Run a simple nginx container with `docker run -d -p 8080:80 --name my-nginx nginx`'
+          ],
+          hints: [
+            'Docker version shows if Docker is properly installed',
+            'The `pull` command downloads images from Docker Hub',
+            'The `-d` flag runs containers in detached mode',
+            'The `-p` flag maps host port to container port'
+          ],
+          expectedCommands: ['docker --version', 'docker pull nginx', 'docker images', 'docker run -d -p 8080:80 --name my-nginx nginx'],
+          validationRules: [
+            {
+              type: 'command',
+              pattern: 'docker.*--version',
+              description: 'Check Docker version'
+            }
+          ],
+          completed: false
+        },
+        {
+          id: 'dockerfile-creation',
+          title: 'Creating Dockerfiles',
+          description: 'Build custom Docker images using Dockerfiles.',
+          instructions: [
+            'Create a simple Dockerfile for a Node.js application',
+            'Use `FROM node:16-alpine` as the base image',
+            'Set the working directory to `/app`',
+            'Copy package files and run `npm install`',
+            'Build the image with `docker build -t my-app .`'
+          ],
+          hints: [
+            'Use `echo` commands to create the Dockerfile',
+            'The `WORKDIR` instruction sets the working directory',
+            'The `COPY` instruction copies files from host to container',
+            'The `RUN` instruction executes commands during build'
+          ],
+          expectedCommands: ['echo "FROM node:16-alpine" > Dockerfile', 'docker build -t my-app .'],
+          validationRules: [
+            {
+              type: 'command',
+              pattern: 'docker.*build.*-t.*my-app',
+              description: 'Build Docker image'
+            }
+          ],
+          completed: false
+        }
+      ] as Question[],
       instructions: `# Docker Containerization Lab
 
 Learn Docker fundamentals through hands-on practice with containers, images, and Dockerfiles.
@@ -292,6 +461,15 @@ CMD ["npm", "start"]
   // Mock session status
   const hasActiveSession = userId && Math.random() > 0.7
   const sessionStatus = hasActiveSession ? 'running' : null
+
+  // If in interactive mode, render the interactive layout
+  if (isInteractiveMode && lab.questions) {
+    return <InteractiveLabLayout 
+      labId={lab.id} 
+      labTitle={lab.title} 
+      questions={lab.questions} 
+    />
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -415,10 +593,12 @@ CMD ["npm", "start"]
                         <Play className="w-4 h-4 mr-1" />
                         Run Code
                       </Button>
-                      <Button variant="outline">
-                        <Terminal className="w-4 h-4 mr-1" />
-                        Open Terminal
-                      </Button>
+                      <Link href={`/labs/${lab.id}?interactive=true`}>
+                        <Button variant="outline">
+                          <Terminal className="w-4 h-4 mr-1" />
+                          Open Interactive Terminal
+                        </Button>
+                      </Link>
                     </div>
                   </CardContent>
                 </Card>
@@ -466,10 +646,12 @@ CMD ["npm", "start"]
                             </Button>
                           </div>
                         ) : (
-                          <Button className="w-full mb-4">
-                            <Play className="w-4 h-4 mr-1" />
-                            Start Lab Environment
-                          </Button>
+                          <Link href={`/labs/${lab.id}?interactive=true`}>
+                            <Button className="w-full mb-4">
+                              <Play className="w-4 h-4 mr-1" />
+                              Start Interactive Lab
+                            </Button>
+                          </Link>
                         )}
                         <div className="text-sm text-gray-600">
                           Environment will auto-stop after 2 hours of inactivity

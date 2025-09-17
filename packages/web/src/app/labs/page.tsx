@@ -340,7 +340,7 @@ export default function LabsPage() {
                         <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
                         <span className="text-sm text-gray-600">{lab.author.name}</span>
                       </div>
-                      <Link href={`/labs/${lab.id}`}>
+                      <Link href={`/labs/${lab.id}?interactive=true`}>
                         <Button size="sm">
                           <Play className="w-4 h-4 mr-1" />
                           Start Lab
