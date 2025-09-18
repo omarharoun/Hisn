@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: roadmap, error } = await supabase
+    const { data: roadmap, error } = await (supabase as any)
       .from('roadmaps')
       .insert({
         title: body.title,
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         tags: body.tags || [],
         is_public: body.is_public || false,
         image_url: body.image_url,
-        created_by: user.id
+        created_by: (user as { id: string }).id
       })
       .select()
       .single()

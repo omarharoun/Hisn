@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('user_progress')
       .select('*')
-      .eq('user_id', user.id)
+      .eq('user_id', (user as { id: string }).id)
 
     // Apply filters
     if (roadmapId) query = query.eq('roadmap_id', roadmapId)
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
       const { data } = await supabase
         .from('user_progress')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', (user as { id: string }).id)
         .eq('roadmap_id', body.roadmap_id)
         .single()
       existingProgress = data
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       const { data } = await supabase
         .from('user_progress')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', (user as { id: string }).id)
         .eq('step_id', body.step_id)
         .single()
       existingProgress = data
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
       const { data } = await supabase
         .from('user_progress')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', (user as { id: string }).id)
         .eq('lab_id', body.lab_id)
         .single()
       existingProgress = data
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
       const { data } = await supabase
         .from('user_progress')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', (user as { id: string }).id)
         .eq('question_id', body.question_id)
         .single()
       existingProgress = data
@@ -129,17 +129,17 @@ export async function POST(request: NextRequest) {
     let progress
     if (existingProgress) {
       // Update existing progress
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('user_progress')
         .update({
           status: body.status,
           score: body.score,
-          time_spent: (existingProgress.time_spent || 0) + (body.time_spent || 0),
-          attempts: (existingProgress.attempts || 0) + 1,
+          time_spent: ((existingProgress as any).time_spent || 0) + (body.time_spent || 0),
+          attempts: ((existingProgress as any).attempts || 0) + 1,
           notes: body.notes,
           completed_at: body.status === 'completed' ? new Date().toISOString() : null
         })
-        .eq('id', existingProgress.id)
+        .eq('id', (existingProgress as any).id)
         .select()
         .single()
 
@@ -149,10 +149,10 @@ export async function POST(request: NextRequest) {
       progress = data
     } else {
       // Create new progress
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('user_progress')
         .insert({
-          user_id: user.id,
+          user_id: (user as { id: string }).id,
           roadmap_id: body.roadmap_id,
           step_id: body.step_id,
           lab_id: body.lab_id,

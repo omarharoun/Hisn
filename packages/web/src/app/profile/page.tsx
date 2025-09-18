@@ -1,5 +1,6 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -259,7 +260,7 @@ export default async function ProfilePage() {
                       <Badge variant="outline">{roadmap.progress}%</Badge>
                     </div>
                     
-                    <Progress value={roadmap.progress} className="h-2 mb-3" />
+                    {(Progress as any)({ value: roadmap.progress, className: "h-2 mb-3" })}
                     
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-500">

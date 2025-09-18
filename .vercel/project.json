@@ -1,0 +1,11 @@
+{
+  "orgId": "your-org-id",
+  "projectId": "your-project-id",
+  "settings": {
+    "buildCommand": "cd packages/web && npm install && npm run build",
+    "outputDirectory": "packages/web/.next",
+    "installCommand": "npm install",
+    "framework": "nextjs",
+    "regions": ["iad1", "sfo1"]
+  }
+}

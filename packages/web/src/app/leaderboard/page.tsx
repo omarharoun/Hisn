@@ -332,7 +332,7 @@ export default function LeaderboardPage() {
                 <span className="text-sm text-gray-600">Progress to next badge</span>
                 <span className="text-sm font-medium">7/10 labs completed</span>
               </div>
-              <Progress value={70} className="h-2 mb-2" />
+              {(Progress as any)({ value: 70, className: "h-2 mb-2" })}
               <p className="text-sm text-gray-600">
                 Complete 3 more labs to earn the <strong>"Lab Master"</strong> badge! 🎯
               </p>

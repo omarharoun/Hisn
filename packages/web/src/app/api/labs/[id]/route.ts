@@ -124,7 +124,7 @@ export async function PUT(
       )
     }
 
-    const { data: lab, error } = await supabase
+    const { data: lab, error } = await (supabase as any)
       .from('labs')
       .update({
         title: body.title,

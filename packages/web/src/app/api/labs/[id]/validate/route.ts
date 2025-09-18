@@ -37,7 +37,7 @@ export async function POST(
     const { data, error } = await supabase.functions.invoke('lab-validation', {
       body: {
         labId: params.id,
-        userId: user.id,
+        userId: (user as { id: string }).id,
         code,
         task
       }

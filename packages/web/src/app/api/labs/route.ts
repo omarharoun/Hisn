@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: lab, error } = await supabase
+    const { data: lab, error } = await (supabase as any)
       .from('labs')
       .insert({
         step_id: body.step_id,
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
         environment: body.environment || {},
         tags: body.tags || [],
         is_public: body.is_public || false,
-        created_by: user.id
+        created_by: (user as { id: string }).id
       })
       .select()
       .single()

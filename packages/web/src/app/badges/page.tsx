@@ -299,7 +299,7 @@ export default function BadgesPage() {
               <div className="text-lg font-bold text-gray-900">
                 {Math.round((earnedBadges.length / allBadges.length) * 100)}%
               </div>
-              <Progress value={(earnedBadges.length / allBadges.length) * 100} className="h-2 mt-2" />
+              {(Progress as any)({ value: (earnedBadges.length / allBadges.length) * 100, className: "h-2 mt-2" })}
             </CardContent>
           </Card>
         </div>
@@ -388,7 +388,7 @@ export default function BadgesPage() {
                         <span className="text-gray-600">Progress</span>
                         <span className="font-medium">7/10 labs</span>
                       </div>
-                      <Progress value={70} className="h-2" />
+                      {(Progress as any)({ value: 70, className: "h-2" })}
                       <div className="text-xs text-gray-500 mt-1">
                         3 more labs to unlock!
                       </div>

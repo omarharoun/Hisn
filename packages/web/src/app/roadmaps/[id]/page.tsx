@@ -302,7 +302,7 @@ export default async function RoadmapDetailPage({ params }: Props) {
                       <span className="text-gray-600">Completion</span>
                       <span className="font-medium">{roadmap.progress}%</span>
                     </div>
-                    <Progress value={roadmap.progress} className="h-3 mb-2" />
+                    {(Progress as any)({ value: roadmap.progress, className: "h-3 mb-2" })}
                     <div className="text-sm text-gray-500">
                       {roadmap.completedSteps} of {roadmap.totalSteps} steps completed
                     </div>

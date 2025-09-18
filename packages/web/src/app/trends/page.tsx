@@ -209,7 +209,7 @@ export default function TrendsPage() {
                         <span className="text-gray-600">Demand Growth</span>
                         <span className="font-medium text-green-600">+{skill.demandGrowth}%</span>
                       </div>
-                      <Progress value={skill.demandGrowth} className="h-2" />
+                      {(Progress as any)({ value: skill.demandGrowth, className: "h-2" })}
                     </div>
 
                     {/* Key Metrics */}
