@@ -39,10 +39,10 @@ export async function GET() {
     }
 
     // Get user statistics using the database function
-    const { data: stats } = await supabase
-      .rpc('get_user_stats', { user_uuid: user.id })
+    const { data: stats } = await (supabase as any)
+      .rpc('get_user_stats', { user_uuid: (user as any).id })
 
-    return NextResponse.json({ user: { ...user, stats } })
+    return NextResponse.json({ user: { ...(user as any), stats } })
   } catch (error) {
     console.error('Error fetching user:', error)
     return NextResponse.json(
@@ -65,7 +65,7 @@ export async function PUT(request: NextRequest) {
     const supabase = createClient()
     const body = await request.json()
 
-    const { data: user, error } = await supabase
+    const { data: user, error } = await (supabase as any)
       .from('users')
       .update({
         first_name: body.first_name,

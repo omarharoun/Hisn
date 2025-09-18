@@ -54,7 +54,7 @@ export async function GET(
         const { data: progress } = await supabase
           .from('user_progress')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', (user as { id: string }).id)
           .eq('roadmap_id', params.id)
 
         userProgress = progress
@@ -108,14 +108,14 @@ export async function PUT(
       .eq('id', params.id)
       .single()
 
-    if (!existingRoadmap || existingRoadmap.created_by !== user.id) {
+    if (!existingRoadmap || (existingRoadmap as any).created_by !== (user as { id: string }).id) {
       return NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }
       )
     }
 
-    const { data: roadmap, error } = await supabase
+    const { data: roadmap, error } = await (supabase as any)
       .from('roadmaps')
       .update({
         title: body.title,
@@ -181,7 +181,7 @@ export async function DELETE(
       .eq('id', params.id)
       .single()
 
-    if (!existingRoadmap || existingRoadmap.created_by !== user.id) {
+    if (!existingRoadmap || (existingRoadmap as any).created_by !== (user as { id: string }).id) {
       return NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }

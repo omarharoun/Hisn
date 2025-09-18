@@ -216,7 +216,7 @@ export default function RoadmapsPage() {
                           <span className="text-gray-600">Progress</span>
                           <span className="font-medium">{roadmap.progress}%</span>
                         </div>
-                        <Progress value={roadmap.progress} className="h-2" />
+                        {(Progress as any)({ value: roadmap.progress, className: "h-2" })}
                         <div className="text-xs text-gray-500 mt-1">
                           {roadmap.completedSteps} of {roadmap.totalSteps} steps completed
                         </div>
