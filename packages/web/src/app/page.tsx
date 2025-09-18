@@ -159,7 +159,7 @@ export default function Home() {
             <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
-                  <Badge variant="success">Most Popular</Badge>
+                  <Badge>Most Popular</Badge>
                   <div className="text-sm text-gray-500">40+ hours</div>
                 </div>
                 <CardTitle className="text-2xl">Full-Stack Web Development</CardTitle>
@@ -198,7 +198,7 @@ export default function Home() {
             <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <div className="flex items-center justify-between mb-4">
-                  <Badge variant="info">Networking</Badge>
+                  <Badge>Networking</Badge>
                   <div className="text-sm text-gray-500">30+ hours</div>
                 </div>
                 <CardTitle className="text-2xl">IP Networking Fundamentals</CardTitle>

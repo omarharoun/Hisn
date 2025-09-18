@@ -11,7 +11,9 @@ const isPublicRoute = createRouteMatcher([
   '/labs/(.*)',
   '/questions',
   '/api/webhooks(.*)',
-  '/api/public(.*)'
+  '/api/public(.*)',
+  '/api/labs(.*)', // Make labs API endpoints public
+  '/api/health'
 ])
 
 export default clerkMiddleware((auth, req) => {
