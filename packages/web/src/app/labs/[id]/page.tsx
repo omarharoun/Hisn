@@ -459,7 +459,7 @@ CMD ["npm", "start"]
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-8">
-                  {lab.tags.map((tag) => (
+                  {lab.tags.map((tag: string) => (
                     <Badge key={tag} variant="outline">
                       {tag}
                     </Badge>
@@ -538,7 +538,7 @@ CMD ["npm", "start"]
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Hints</h2>
                 <div className="space-y-3">
-                  {lab.hints.map((hint, index) => (
+                  {lab.hints.map((hint: string, index: number) => (
                     <Card key={index}>
                       <CardContent className="pt-4">
                         <div className="flex items-start gap-3">
