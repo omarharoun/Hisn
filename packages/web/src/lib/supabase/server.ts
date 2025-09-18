@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { Database } from './types'
+import config from '@/lib/config'
 
 export function createClient() {
   const cookieStore = cookies()
@@ -9,18 +10,33 @@ export function createClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  // For testing without backend, return a mock client
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('Missing Supabase environment variables - using mock client')
+  // For testing without backend or when using mock data, return a mock client
+  if (!supabaseUrl || !supabaseAnonKey || config.useMockData) {
+    if (!config.useMockData) {
+      console.warn('Missing Supabase environment variables - using mock client')
+    }
     // Return a mock client that won't throw errors
     return {
-      from: () => ({
-        select: () => ({
+      from: (table: string) => ({
+        select: (query?: string) => ({
           single: () => Promise.resolve({ data: null, error: null }),
-          eq: () => ({
+          eq: (column: string, value: any) => ({
+            single: () => Promise.resolve({ data: null, error: null }),
+            select: (query?: string) => Promise.resolve({ data: [], error: null })
+          }),
+          order: (column: string, options?: any) => ({
+            range: (from: number, to: number) => Promise.resolve({ data: [], error: null })
+          })
+        }),
+        insert: (data: any) => ({
+          select: () => ({
             single: () => Promise.resolve({ data: null, error: null })
           })
-        })
+        }),
+        update: (data: any) => ({
+          eq: (column: string, value: any) => Promise.resolve({ data: null, error: null })
+        }),
+        upsert: (data: any) => Promise.resolve({ data: null, error: null })
       }),
       auth: {
         getSession: () => Promise.resolve({ data: { session: null }, error: null }),
