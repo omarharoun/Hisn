@@ -1,15 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "cd packages/web && npm install && npm run build",
-  "outputDirectory": "packages/web/.next",
-  "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["iad1", "sfo1"],
   "functions": {
-    "packages/web/src/app/api/**/*.ts": {
-      "maxDuration": 30
-    },
-    "packages/web/src/app/api/**/*.js": {
+    "src/app/api/**/*.ts": {
       "maxDuration": 30
     }
   },
