@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { auth } from '@clerk/nextjs/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -27,7 +26,8 @@ interface Props {
 }
 
 export default async function LabDetailPage({ params }: Props) {
-  const { userId } = auth()
+  // Temporarily disable authentication for testing
+  const userId = 'test-user' // Mock user for testing without auth
   
   // Mock data - in real app, this would come from API
   const labs = {
@@ -453,40 +453,26 @@ CMD ["npm", "start"]
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {userId ? (
-                      <>
-                        {sessionStatus ? (
-                          <div className="space-y-3">
-                            <Button className="w-full" variant="outline">
-                              <Terminal className="w-4 h-4 mr-1" />
-                              Continue Lab
-                            </Button>
-                            <Button className="w-full" variant="destructive" size="sm">
-                              Stop Session
-                            </Button>
-                          </div>
-                        ) : (
-                          <Button className="w-full mb-4">
-                            <Play className="w-4 h-4 mr-1" />
-                            Start Lab Environment
-                          </Button>
-                        )}
-                        <div className="text-sm text-gray-600">
-                          Environment will auto-stop after 2 hours of inactivity
-                        </div>
-                      </>
+                    {/* Always show lab controls for testing without auth */}
+                    {sessionStatus ? (
+                      <div className="space-y-3">
+                        <Button className="w-full" variant="outline">
+                          <Terminal className="w-4 h-4 mr-1" />
+                          Continue Lab
+                        </Button>
+                        <Button className="w-full" variant="destructive" size="sm">
+                          Stop Session
+                        </Button>
+                      </div>
                     ) : (
-                      <>
-                        <div className="text-sm text-gray-600 mb-4">
-                          Sign in to start the lab environment
-                        </div>
-                        <Link href="/sign-in">
-                          <Button className="w-full">
-                            Sign In to Start
-                          </Button>
-                        </Link>
-                      </>
+                      <Button className="w-full mb-4">
+                        <Play className="w-4 h-4 mr-1" />
+                        Start Lab Environment
+                      </Button>
                     )}
+                    <div className="text-sm text-gray-600">
+                      Environment will auto-stop after 2 hours of inactivity
+                    </div>
                   </CardContent>
                 </Card>
 

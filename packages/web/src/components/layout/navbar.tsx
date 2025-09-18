@@ -15,7 +15,9 @@ import {
 import { useState } from 'react'
 
 export function Navbar() {
-  const { isSignedIn, user } = useUser()
+  // Temporarily disable authentication for testing
+  const isSignedIn = false // Always show as not signed in for testing
+  const user = null
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navigation = [
