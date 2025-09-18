@@ -51,7 +51,7 @@ export async function GET(
         const { data: progress } = await supabase
           .from('user_progress')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', (user as { id: string }).id)
           .eq('lab_id', params.id)
           .single()
 
@@ -61,7 +61,7 @@ export async function GET(
         const { data: session } = await supabase
           .from('lab_sessions')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('user_id', (user as { id: string }).id)
           .eq('lab_id', params.id)
           .in('status', ['starting', 'running'])
           .single()
@@ -117,7 +117,7 @@ export async function PUT(
       .eq('id', params.id)
       .single()
 
-    if (!existingLab || existingLab.created_by !== user.id) {
+    if (!existingLab || (existingLab as { created_by: string }).created_by !== (user as { id: string }).id) {
       return NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }
@@ -195,7 +195,7 @@ export async function DELETE(
       .eq('id', params.id)
       .single()
 
-    if (!existingLab || existingLab.created_by !== user.id) {
+    if (!existingLab || (existingLab as { created_by: string }).created_by !== (user as { id: string }).id) {
       return NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }
