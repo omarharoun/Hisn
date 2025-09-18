@@ -64,7 +64,7 @@ export default async function LabDetailPage({ params }: Props) {
   const userId = 'test-user' // Mock user for testing without auth
   
   // Mock data - in real app, this would come from API
-  const labs = {
+  const labs: Record<string, any> = {
     'linux-basics-lab': {
       id: 'linux-basics-lab',
       title: 'Linux Command Line Essentials',
@@ -225,7 +225,7 @@ cat fruits.txt | grep "a" | wc -l
           id: 'task-1',
           title: 'Navigate the File System',
           description: 'Use pwd, ls, and cd commands to explore the file system',
-          validation: { type: 'command', expected: ['pwd', 'ls -la', 'cd /'] },
+          validation: { type: 'command' as const, expected: ['pwd', 'ls -la', 'cd /'] },
           completed: false,
           points: 10
         },
@@ -233,7 +233,7 @@ cat fruits.txt | grep "a" | wc -l
           id: 'task-2',
           title: 'Create Files and Directories',
           description: 'Create a directory called my-lab and add three files to it',
-          validation: { type: 'file', expected: ['my-lab/file1.txt', 'my-lab/file2.txt', 'my-lab/script.sh'] },
+          validation: { type: 'file' as const, expected: ['my-lab/file1.txt', 'my-lab/file2.txt', 'my-lab/script.sh'] },
           completed: false,
           points: 15
         },
@@ -241,7 +241,7 @@ cat fruits.txt | grep "a" | wc -l
           id: 'task-3',
           title: 'Manage Permissions',
           description: 'Make script.sh executable and set file2.txt to read-only',
-          validation: { type: 'command', expected: ['chmod +x', 'chmod 444'] },
+          validation: { type: 'command' as const, expected: ['chmod +x', 'chmod 444'] },
           completed: false,
           points: 20
         },
@@ -249,7 +249,7 @@ cat fruits.txt | grep "a" | wc -l
           id: 'task-4',
           title: 'Process Management',
           description: 'List processes, run a background job, and manage it',
-          validation: { type: 'command', expected: ['ps aux', 'jobs', 'kill'] },
+          validation: { type: 'command' as const, expected: ['ps aux', 'jobs', 'kill'] },
           completed: false,
           points: 15
         },
@@ -257,7 +257,7 @@ cat fruits.txt | grep "a" | wc -l
           id: 'task-5',
           title: 'Text Processing',
           description: 'Use grep, sort, and wc with pipes to process text',
-          validation: { type: 'output', expected: 'sorted' },
+          validation: { type: 'output' as const, expected: 'sorted' },
           completed: false,
           points: 20
         }
@@ -341,7 +341,7 @@ CMD ["npm", "start"]
           id: 'task-1',
           title: 'Run Your First Container',
           description: 'Pull and run a hello-world container',
-          validation: { type: 'command', expected: ['docker run hello-world'] },
+          validation: { type: 'command' as const, expected: ['docker run hello-world'] },
           completed: false,
           points: 10
         },
@@ -349,7 +349,7 @@ CMD ["npm", "start"]
           id: 'task-2',
           title: 'Build Custom Image',
           description: 'Create a Dockerfile and build your own image',
-          validation: { type: 'command', expected: ['docker build'] },
+          validation: { type: 'command' as const, expected: ['docker build'] },
           completed: false,
           points: 25
         },
@@ -357,7 +357,7 @@ CMD ["npm", "start"]
           id: 'task-3',
           title: 'Container Management',
           description: 'List, stop, and remove containers',
-          validation: { type: 'command', expected: ['docker ps', 'docker stop', 'docker rm'] },
+          validation: { type: 'command' as const, expected: ['docker ps', 'docker stop', 'docker rm'] },
           completed: false,
           points: 15
         },
@@ -365,7 +365,7 @@ CMD ["npm", "start"]
           id: 'task-4',
           title: 'Work with Volumes',
           description: 'Create and mount a volume to persist data',
-          validation: { type: 'command', expected: ['docker volume create', 'docker run -v'] },
+          validation: { type: 'command' as const, expected: ['docker volume create', 'docker run -v'] },
           completed: false,
           points: 20
         }
