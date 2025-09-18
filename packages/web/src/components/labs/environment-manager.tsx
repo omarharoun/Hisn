@@ -271,7 +271,6 @@ export function EnvironmentManager({ labId, environment, onStatusChange }: Envir
                 <Button 
                   onClick={startEnvironment}
                   className="flex-1"
-                  disabled={status.status === 'starting'}
                 >
                   <Play className="w-4 h-4 mr-1" />
                   Start Environment
@@ -284,7 +283,6 @@ export function EnvironmentManager({ labId, environment, onStatusChange }: Envir
                     onClick={stopEnvironment}
                     variant="destructive"
                     className="flex-1"
-                    disabled={status.status === 'stopping'}
                   >
                     <Square className="w-4 h-4 mr-1" />
                     Stop
@@ -292,7 +290,6 @@ export function EnvironmentManager({ labId, environment, onStatusChange }: Envir
                   <Button 
                     onClick={restartEnvironment}
                     variant="outline"
-                    disabled={status.status === 'stopping' || status.status === 'starting'}
                   >
                     <RefreshCw className="w-4 h-4 mr-1" />
                     Restart
