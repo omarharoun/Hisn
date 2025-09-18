@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -11,7 +12,7 @@ import {
   Star,
   ArrowRight,
   Play,
-  Terminal,
+  Terminal as TerminalIcon,
   Globe,
   Cpu,
   CheckCircle,
@@ -20,6 +21,39 @@ import {
   BookOpen,
   Settings
 } from 'lucide-react'
+
+// Dynamic imports for client components
+const Terminal = dynamic(() => import('@/components/labs/terminal').then(mod => mod.Terminal), {
+  ssr: false,
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-lg" />
+})
+
+const EnvironmentManager = dynamic(() => import('@/components/labs/environment-manager').then(mod => mod.EnvironmentManager), {
+  ssr: false,
+  loading: () => <div className="h-64 bg-gray-100 animate-pulse rounded-lg" />
+})
+
+const CodeEditor = dynamic(() => import('@/components/labs/code-editor').then(mod => mod.CodeEditor), {
+  ssr: false,
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-lg" />
+})
+
+const ProgressTracker = dynamic(() => import('@/components/labs/progress-tracker').then(mod => mod.ProgressTracker), {
+  ssr: false,
+  loading: () => <div className="h-64 bg-gray-100 animate-pulse rounded-lg" />
+})
+
+interface Task {
+  id: string
+  title: string
+  description: string
+  validation?: {
+    type: 'command' | 'file' | 'output'
+    expected: string | string[]
+  }
+  completed: boolean
+  points: number
+}
 
 interface Props {
   params: { id: string }
@@ -186,6 +220,48 @@ cat fruits.txt | grep "a" | wc -l
         "The '&' symbol runs a command in the background",
         "Pipes (|) allow you to connect the output of one command to the input of another"
       ],
+      tasks: [
+        {
+          id: 'task-1',
+          title: 'Navigate the File System',
+          description: 'Use pwd, ls, and cd commands to explore the file system',
+          validation: { type: 'command', expected: ['pwd', 'ls -la', 'cd /'] },
+          completed: false,
+          points: 10
+        },
+        {
+          id: 'task-2',
+          title: 'Create Files and Directories',
+          description: 'Create a directory called my-lab and add three files to it',
+          validation: { type: 'file', expected: ['my-lab/file1.txt', 'my-lab/file2.txt', 'my-lab/script.sh'] },
+          completed: false,
+          points: 15
+        },
+        {
+          id: 'task-3',
+          title: 'Manage Permissions',
+          description: 'Make script.sh executable and set file2.txt to read-only',
+          validation: { type: 'command', expected: ['chmod +x', 'chmod 444'] },
+          completed: false,
+          points: 20
+        },
+        {
+          id: 'task-4',
+          title: 'Process Management',
+          description: 'List processes, run a background job, and manage it',
+          validation: { type: 'command', expected: ['ps aux', 'jobs', 'kill'] },
+          completed: false,
+          points: 15
+        },
+        {
+          id: 'task-5',
+          title: 'Text Processing',
+          description: 'Use grep, sort, and wc with pipes to process text',
+          validation: { type: 'output', expected: 'sorted' },
+          completed: false,
+          points: 20
+        }
+      ],
       createdAt: '2024-01-15'
     },
     'docker-basics-lab': {
@@ -260,6 +336,40 @@ CMD ["npm", "start"]
         "Use 'docker build -t name:tag .' to build images",
         "Volumes persist data outside containers"
       ],
+      tasks: [
+        {
+          id: 'task-1',
+          title: 'Run Your First Container',
+          description: 'Pull and run a hello-world container',
+          validation: { type: 'command', expected: ['docker run hello-world'] },
+          completed: false,
+          points: 10
+        },
+        {
+          id: 'task-2',
+          title: 'Build Custom Image',
+          description: 'Create a Dockerfile and build your own image',
+          validation: { type: 'command', expected: ['docker build'] },
+          completed: false,
+          points: 25
+        },
+        {
+          id: 'task-3',
+          title: 'Container Management',
+          description: 'List, stop, and remove containers',
+          validation: { type: 'command', expected: ['docker ps', 'docker stop', 'docker rm'] },
+          completed: false,
+          points: 15
+        },
+        {
+          id: 'task-4',
+          title: 'Work with Volumes',
+          description: 'Create and mount a volume to persist data',
+          validation: { type: 'command', expected: ['docker volume create', 'docker run -v'] },
+          completed: false,
+          points: 20
+        }
+      ],
       createdAt: '2024-01-18'
     }
   }
@@ -279,7 +389,7 @@ CMD ["npm", "start"]
   const getEnvironmentIcon = (type: string) => {
     switch (type) {
       case 'docker':
-        return <Terminal className="w-5 h-5" />
+        return <TerminalIcon className="w-5 h-5" />
       case 'kubernetes':
         return <Cpu className="w-5 h-5" />
       case 'browser':
@@ -386,42 +496,42 @@ CMD ["npm", "start"]
                 </Card>
               </div>
 
+              {/* Progress Tracker */}
+              <div className="mb-8">
+                <ProgressTracker 
+                  labId={lab.id}
+                  tasks={lab.tasks || []}
+                  onTaskComplete={(taskId) => console.log('Task completed:', taskId)}
+                  onLabComplete={() => console.log('Lab completed!')}
+                />
+              </div>
+
+              {/* Interactive Terminal */}
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Interactive Terminal</h2>
+                <Terminal 
+                  labId={lab.id}
+                  initialCommands={['echo "Welcome to the lab!"', 'pwd']}
+                  onCommandExecute={(cmd) => console.log('Command executed:', cmd)}
+                />
+              </div>
+
               {/* Code Editor */}
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Code Editor</h2>
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">Workspace</CardTitle>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
-                          <Settings className="w-4 h-4 mr-1" />
-                          Settings
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          Reset
-                        </Button>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-sm">
-                      <pre className="whitespace-pre-wrap overflow-x-auto">
-                        {lab.initialCode}
-                      </pre>
-                    </div>
-                    <div className="flex gap-2 mt-4">
-                      <Button>
-                        <Play className="w-4 h-4 mr-1" />
-                        Run Code
-                      </Button>
-                      <Button variant="outline">
-                        <Terminal className="w-4 h-4 mr-1" />
-                        Open Terminal
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                <CodeEditor
+                  initialCode={lab.initialCode}
+                  language={lab.id.includes('docker') ? 'dockerfile' : 'bash'}
+                  onCodeChange={(code) => console.log('Code changed')}
+                  onRun={async (code) => {
+                    // Simulate running code
+                    return {
+                      success: true,
+                      output: `Executing:\n${code}\n\nSuccess! Code executed.`
+                    }
+                  }}
+                  onSave={(code) => console.log('Code saved')}
+                />
               </div>
 
               {/* Hints */}
@@ -445,36 +555,12 @@ CMD ["npm", "start"]
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <div className="sticky top-8 space-y-6">
-                {/* Start Lab Card */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>
-                      {sessionStatus ? 'Lab Running' : 'Start Lab'}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {/* Always show lab controls for testing without auth */}
-                    {sessionStatus ? (
-                      <div className="space-y-3">
-                        <Button className="w-full" variant="outline">
-                          <Terminal className="w-4 h-4 mr-1" />
-                          Continue Lab
-                        </Button>
-                        <Button className="w-full" variant="destructive" size="sm">
-                          Stop Session
-                        </Button>
-                      </div>
-                    ) : (
-                      <Button className="w-full mb-4">
-                        <Play className="w-4 h-4 mr-1" />
-                        Start Lab Environment
-                      </Button>
-                    )}
-                    <div className="text-sm text-gray-600">
-                      Environment will auto-stop after 2 hours of inactivity
-                    </div>
-                  </CardContent>
-                </Card>
+                {/* Environment Manager */}
+                <EnvironmentManager
+                  labId={lab.id}
+                  environment={lab.environment}
+                  onStatusChange={(status) => console.log('Environment status:', status)}
+                />
 
                 {/* Environment Details */}
                 <Card>
