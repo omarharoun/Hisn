@@ -91,10 +91,10 @@ export class LabService {
       // Return mock data
       let labs = Object.values(mockLabs)
       if (filters?.type) {
-        labs = labs.filter(lab => lab.type === filters.type)
+        labs = labs.filter((lab: Lab) => lab.type === filters.type)
       }
       if (filters?.difficulty) {
-        labs = labs.filter(lab => lab.difficulty === filters.difficulty)
+        labs = labs.filter((lab: Lab) => lab.difficulty === filters.difficulty)
       }
       return labs
     }
@@ -116,7 +116,7 @@ export class LabService {
     const { data, error } = await query
     if (error) throw error
 
-    return data?.map(lab => this.transformLabData(lab)) || []
+    return data?.map((lab: any) => this.transformLabData(lab)) || []
   }
 
   async getLab(id: string): Promise<Lab | null> {
