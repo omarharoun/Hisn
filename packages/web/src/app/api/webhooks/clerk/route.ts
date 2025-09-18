@@ -3,6 +3,9 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { createAdminClient } from '@/lib/supabase/server'
 
+export const dynamic = 'force-dynamic'
+
+
 const webhookSecret = process.env.CLERK_WEBHOOK_SECRET || ''
 
 export async function POST(req: NextRequest) {
