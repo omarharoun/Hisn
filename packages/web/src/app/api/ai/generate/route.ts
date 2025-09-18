@@ -17,13 +17,13 @@ export async function POST(request: NextRequest) {
     const { promptType, variables } = body
 
     // Get user from database
-    const { data: user } = await supabase
+    const { data: user, error: userError } = await supabase
       .from('users')
       .select('id')
       .eq('clerk_id', userId)
       .single()
 
-    if (!user) {
+    if (userError || !user) {
       return NextResponse.json(
         { error: 'User not found' },
         { status: 404 }
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       body: {
         promptType,
         variables,
-        userId: user.id
+        userId: (user as { id: string }).id
       }
     })
 
