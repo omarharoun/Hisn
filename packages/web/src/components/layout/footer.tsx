@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { BookOpen, Github, Twitter, Linkedin } from 'lucide-react'
 
 export function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = 2024 // Static year to avoid server-side Date issues
 
   const footerLinks = {
     product: [
